@@ -2,12 +2,12 @@
 
 module UltimateTurboModal::Helpers
   module StreamHelper
-    def modal(message)
+    def utmodal(message)
       case message.to_s.downcase.to_sym
       when :close, :hide
-        turbo_stream_action_tag "modal", message: "hide"
+        turbo_stream_action_tag "utmodal", message: "hide"
       else
-        raise ArgumentError, "Unknown modal message: #{message}"
+        raise ArgumentError, "Unknown utmodal message: #{message}"
       end
     end
   end

@@ -57,7 +57,7 @@ A demo application can be found at https://github.com/cmer/ultimate_turbo_modal-
 3. Add the following as the first element in the `body` tag of `views/layouts/application.html.erb`:
 
 ```erb
-<%= turbo_frame_tag "modal" %>
+<%= turbo_frame_tag "utmodal" %>
 ``````
 
 4. Set your desired flavor and default configuration at `app/config/initializers/ultimate_turbo_modal.rb`.
@@ -115,26 +115,26 @@ content: [
 &nbsp;
 ## Usage
 
-1. Wrap your view inside a `modal` block as follow:
+1. Wrap your view inside a `utmmodal` block as follow:
 
 ```erb
-<%= modal do %>
+<%= utmmodal do %>
   Hello World!
 <% end %>
 ```
 
-2. Link to your view by specifying `modal` as the target Turbo Frame:
+2. Link to your view by specifying `utmmodal` as the target Turbo Frame:
 
 ```erb
-<%= link_to "Open Modal", "/hello_world", data: { turbo_frame: "modal" } %>
+<%= link_to "Open Modal", "/hello_world", data: { turbo_frame: "utmmodal" } %>
 ```
 
 Clicking on the link will automatically open the content of the view inside a modal. If you open the link in a new tab, it will render normally outside of the modal. Nothing to do!
 
-If you need to do something a little bit more advanced when the view is shown outside of a modal, you can use the `#inside_modal?` method as such:
+If you need to do something a little bit more advanced when the view is shown outside of a modal, you can use the `#inside_utmodal?` method as such:
 
 ```erb
-<% if inside_modal? %>
+<% if inside_utmodal? %>
   <h1 class="text-2xl mb-8">Hello from modal</h1>
 <% else %>
   <h1 class="text-2xl mb-8">Hello from a normal page render</h1>
@@ -183,13 +183,13 @@ such as datepickers.
 ### Example usage with options
 
 ```erb
-<%= modal(padding: true, close_button: false, advance: false) do %>
+<%= utmodal(padding: true, close_button: false, advance: false) do %>
   Hello World!
 <% end %>
 ```
 
 ```erb
-<%= modal(padding: true, close_button: false, advance: "/foo/bar") do %>
+<%= utmodal(padding: true, close_button: false, advance: "/foo/bar") do %>
   Hello World!
 <% end %>
 ```
@@ -199,7 +199,7 @@ such as datepickers.
 You can set a custom title and footer by passing a block. For example
 
 ```erb
-<%= modal do |m| %>
+<%= utmodal do |m| %>
   <% m.title do %>
     <div>My Title</div>
   <% end %>

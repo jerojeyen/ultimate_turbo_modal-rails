@@ -5,11 +5,11 @@ module UltimateTurboModal::Helpers
     extend ActiveSupport::Concern
 
     def inside_modal?
-      request.headers["Turbo-Frame"] == "modal"
+      request.headers["Turbo-Frame"] == "utmodal"
     end
 
     included do
-      helper_method :inside_modal?
+      helper_method :inside_utmodal?
     end
   end
 end

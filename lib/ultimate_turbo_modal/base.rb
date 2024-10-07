@@ -17,7 +17,7 @@ class UltimateTurboModal::Base < Phlex::HTML
     advance: UltimateTurboModal.configuration.advance,
     allowed_click_outside_selector: UltimateTurboModal.configuration.allowed_click_outside_selector,
     close_button: UltimateTurboModal.configuration.close_button,
-    close_button_data_action: "modal#hideModal",
+    close_button_data_action: "utmodal#hideUTModal",
     close_button_sr_label: "Close modal",
     footer_divider: UltimateTurboModal.configuration.footer_divider,
     header: UltimateTurboModal.configuration.header,
@@ -51,12 +51,12 @@ class UltimateTurboModal::Base < Phlex::HTML
 
   def view_template(&block)
     if turbo_frame?
-      turbo_frame_tag("modal") do
-        modal(&block)
+      turbo_frame_tag("utmodal") do
+        utmodal(&block)
       end
     elsif turbo_stream?
-      Turbo::StreamsHelper.turbo_stream_action_tag("update", target: "modal") do
-        modal(&block)
+      Turbo::StreamsHelper.turbo_stream_action_tag("update", target: "utmodal") do
+        utmodal(&block)
       end
     else
       render block
@@ -110,7 +110,7 @@ class UltimateTurboModal::Base < Phlex::HTML
 
   ## HTML components
 
-  def modal(&block)
+  def utmodal(&block)
     outer_divs do
       div_content do
         div_header
@@ -130,19 +130,19 @@ class UltimateTurboModal::Base < Phlex::HTML
   end
 
   def div_dialog(&block)
-    div(id: "modal-container",
+    div(id: "utmodal-container",
       class: self.class::DIV_DIALOG_CLASSES,
       role: "dialog",
       aria: {
-        labeled_by: "modal-title-h",
+        labeled_by: "utmodal-title-h",
         modal: true
       },
       data: {
-        controller: "modal",
-        modal_target: "container",
-        modal_advance_url_value: advance_url,
-        modal_allowed_click_outside_selector_value: allowed_click_outside_selector,
-        action: "turbo:submit-end->modal#submitEnd keyup@window->modal#closeWithKeyboard click@window->modal#outsideModalClicked click->modal#outsideModalClicked",
+        controller: "utmodal",
+        utmodal_target: "container",
+        utmodal_advance_url_value: advance_url,
+        utmodal_allowed_click_outside_selector_value: allowed_click_outside_selector,
+        action: "turbo:submit-end->utmodal#submitEnd keyup@window->utmodal#closeWithKeyboard click@window->utmodal#outsideUTModalClicked click->utmodal#outsideUTModalClicked",
         transition_enter: "ease-out duration-100",
         transition_enter_start: "opacity-0",
         transition_enter_end: "opacity-100",
@@ -159,51 +159,51 @@ class UltimateTurboModal::Base < Phlex::HTML
   end
 
   def div_overlay
-    div(id: "modal-overlay", class: self.class::DIV_OVERLAY_CLASSES)
+    div(id: "utmodal-overlay", class: self.class::DIV_OVERLAY_CLASSES)
   end
 
   def div_outer(&block)
-    div(id: "modal-outer", class: self.class::DIV_OUTER_CLASSES, &block)
+    div(id: "utmodal-outer", class: self.class::DIV_OUTER_CLASSES, &block)
   end
 
   def div_inner(&block)
-    div(id: "modal-inner", class: self.class::DIV_INNER_CLASSES, data: content_div_data, &block)
+    div(id: "utmodal-inner", class: self.class::DIV_INNER_CLASSES, data: content_div_data, &block)
   end
 
   def div_content(&block)
-    data = (content_div_data || {}).merge({modal_target: "content"})
-    div(id: "modal-content", class: self.class::DIV_CONTENT_CLASSES, data:, &block)
+    data = (content_div_data || {}).merge({utmodal_target: "content"})
+    div(id: "utmodal-content", class: self.class::DIV_CONTENT_CLASSES, data:, &block)
   end
 
   def div_main(&block)
-    div(id: "modal-main", class: self.class::DIV_MAIN_CLASSES, &block)
+    div(id: "utmodal-main", class: self.class::DIV_MAIN_CLASSES, &block)
   end
 
   def div_header(&block)
-    div(id: "modal-header", class: self.class::DIV_HEADER_CLASSES) do
+    div(id: "utmodal-header", class: self.class::DIV_HEADER_CLASSES) do
       div_title
       button_close
     end
   end
 
   def div_title
-    div(id: "modal-title", class: self.class::DIV_TITLE_CLASSES) do
+    div(id: "utmodal-title", class: self.class::DIV_TITLE_CLASSES) do
       if @title_block.present?
         render @title_block
       else
-        h3(id: "modal-title-h", class: self.class::DIV_TITLE_H_CLASSES) { @title }
+        h3(id: "utmodal-title-h", class: self.class::DIV_TITLE_H_CLASSES) { @title }
       end
     end
   end
 
   def div_footer
-    div(id: "modal-footer", class: self.class::DIV_FOOTER_CLASSES) do
+    div(id: "utmodal-footer", class: self.class::DIV_FOOTER_CLASSES) do
       render @footer
     end
   end
 
   def button_close
-    div(id: "modal-close", class: self.class::BUTTON_CLOSE_CLASSES) do
+    div(id: "utmodal-close", class: self.class::BUTTON_CLOSE_CLASSES) do
       close_button_tag do
         icon_close
         span(class: self.class::BUTTON_CLOSE_SR_ONLY_CLASSES) { @close_button_sr_label }
