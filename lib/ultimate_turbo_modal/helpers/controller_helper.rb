@@ -4,7 +4,7 @@ module UltimateTurboModal::Helpers
   module ControllerHelper
     extend ActiveSupport::Concern
 
-    def inside_modal?
+    def inside_utmodal?
       request.headers["Turbo-Frame"] == "utmodal"
     end
 
