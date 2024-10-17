@@ -3,7 +3,7 @@
 module UltimateTurboModal::Flavors
   class Tailwind < UltimateTurboModal::Base
     DIV_DIALOG_CLASSES = "relative group z-[70]"
-    DIV_OVERLAY_CLASSES = "fixed z-[60] inset-0 transition-opacity transition-colors backdrop-blur-md bg-gray-900/30"
+    DIV_OVERLAY_CLASSES = "fixed z-[60] inset-0 bg-gray-900/50"
     DIV_OUTER_CLASSES = "fixed z-[70] inset-0 overflow-y-auto sm:max-w-[80%] md:max-w-3xl sm:mx-auto m-4"
     DIV_INNER_CLASSES = "flex min-h-full items-center justify-center p-1 sm:p-4"
     DIV_CONTENT_CLASSES = "relative transform overflow-hidden rounded-lg bg-white text-left shadow transition-all sm:my-8 sm:max-w-3xl dark:bg-gray-800 dark:text-white"
