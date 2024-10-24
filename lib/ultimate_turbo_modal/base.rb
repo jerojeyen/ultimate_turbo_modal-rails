@@ -24,7 +24,11 @@ class UltimateTurboModal::Base < Phlex::HTML
     header_divider: UltimateTurboModal.configuration.header_divider,
     padding: UltimateTurboModal.configuration.padding,
     content_div_data: nil,
-    request: nil, title: nil
+    request: nil,
+    title: nil,
+    inner_data_controller: nil,
+    full_width: false,
+    disable_close_on_form_submit: false
   )
     @advance = !!advance
     @advance_url = advance if advance.present? && advance.is_a?(String)
@@ -39,6 +43,9 @@ class UltimateTurboModal::Base < Phlex::HTML
     @content_div_data = content_div_data
     @request = request
     @title = title
+    @inner_data_controller = inner_data_controller
+    @full_width = full_width
+    @disable_close_on_form_submit = disable_close_on_form_submit
 
     unless self.class.include?(Turbo::FramesHelper)
       self.class.include Turbo::FramesHelper
@@ -82,6 +89,8 @@ class UltimateTurboModal::Base < Phlex::HTML
   def title_block? = !!@title_block
 
   def title? = !!@title
+
+  def inner_data_controller? = !!@inner_data_controller
 
   def header? = !!@header
 
@@ -130,6 +139,28 @@ class UltimateTurboModal::Base < Phlex::HTML
   end
 
   def div_dialog(&block)
+    data = {
+      controller: "utmodal",
+      utmodal_target: "container",
+      utmodal_advance_url_value: advance_url,
+      utmodal_allowed_click_outside_selector_value: allowed_click_outside_selector,
+      action: "turbo:submit-end->utmodal#submitEnd keyup@window->utmodal#closeWithKeyboard click@window->utmodal#outsideUTModalClicked click->utmodal#outsideUTModalClicked",
+      transition_enter: "ease-out duration-100",
+      transition_enter_start: "opacity-0",
+      transition_enter_end: "opacity-100",
+      transition_leave: "ease-in duration-50",
+      transition_leave_start: "opacity-100",
+      transition_leave_end: "opacity-0",
+      padding: padding?.to_s,
+      title: title?.to_s,
+      header: header?.to_s,
+      close_button: close_button?.to_s,
+      header_divider: header_divider?.to_s,
+      footer_divider: footer_divider?.to_s
+    }
+
+    data.merge!({utmodal_disable_close_on_form_submit_value: @disable_close_on_form_submit.to_s}) if @disable_close_on_form_submit
+
     div(id: "utmodal-container",
       class: self.class::DIV_DIALOG_CLASSES,
       role: "dialog",
@@ -137,25 +168,7 @@ class UltimateTurboModal::Base < Phlex::HTML
         labeled_by: "utmodal-title-h",
         modal: true
       },
-      data: {
-        controller: "utmodal",
-        utmodal_target: "container",
-        utmodal_advance_url_value: advance_url,
-        utmodal_allowed_click_outside_selector_value: allowed_click_outside_selector,
-        action: "turbo:submit-end->utmodal#submitEnd keyup@window->utmodal#closeWithKeyboard click@window->utmodal#outsideUTModalClicked click->utmodal#outsideUTModalClicked",
-        transition_enter: "ease-out duration-100",
-        transition_enter_start: "opacity-0",
-        transition_enter_end: "opacity-100",
-        transition_leave: "ease-in duration-50",
-        transition_leave_start: "opacity-100",
-        transition_leave_end: "opacity-0",
-        padding: padding?.to_s,
-        title: title?.to_s,
-        header: header?.to_s,
-        close_button: close_button?.to_s,
-        header_divider: header_divider?.to_s,
-        footer_divider: footer_divider?.to_s
-      }, &block)
+      data: data, &block)
   end
 
   def div_overlay
@@ -172,7 +185,11 @@ class UltimateTurboModal::Base < Phlex::HTML
 
   def div_content(&block)
     data = (content_div_data || {}).merge({utmodal_target: "content"})
-    div(id: "utmodal-content", class: self.class::DIV_CONTENT_CLASSES, data:, &block)
+    data.merge!({controller: @inner_data_controller}) if inner_data_controller?
+
+    classes = self.class::DIV_CONTENT_CLASSES
+    classes += " w-full" if @full_width
+    div(id: "utmodal-content", class: classes, data:, &block)
   end
 
   def div_main(&block)
