@@ -11,7 +11,7 @@ module UltimateTurboModal::Flavors
     DIV_HEADER_CLASSES = "flex items-center w-full py-4 rounded-t dark:border-gray-600 group-data-[header-divider=true]:border-b group-data-[header=false]:absolute"
     DIV_TITLE_CLASSES = "pl-4 flex-1"
     DIV_TITLE_H_CLASSES = "group-data-[title=false]:hidden text-lg font-semibold text-gray-900 dark:text-white"
-    DIV_FOOTER_CLASSES = "flex p-4 rounded-b dark:border-gray-600 group-data-[footer-divider=true]:border-t"
+    DIV_FOOTER_CLASSES = "flex items-center p-4 rounded-b dark:border-gray-600 group-data-[footer-divider=true]:border-t"
     BUTTON_CLOSE_CLASSES = "mr-4 group-data-[close-button=false]:hidden"
     BUTTON_CLOSE_SR_ONLY_CLASSES = "sr-only"
     CLOSE_BUTTON_TAG_CLASSES = "text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
